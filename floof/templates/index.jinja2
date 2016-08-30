@@ -21,14 +21,17 @@
     <script>var files = JSON.parse('{{ files|safe }}');</script>
     
     <!-- Include jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> -->
+    <script src="{{request.static_url('floof:static/jquery.min.js')}}"></script>
     
     <script>
       $("body").on("contextmenu", "canvas", function(e){return false;});
     </script>
     
     <!-- JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.11/pixi.min.js"></script>
-    <script src="http://floof.space/static/spritesheet.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.11/pixi.min.js"></script> -->
+    <!-- <script src="http://floof.space/static/spritesheet.js"></script> -->
+    <script src="{{request.static_url('floof:static/pixi.min.js')}}"></script>
+    <script src="{{request.static_url('floof:static/spritesheet.js')}}"></script>
   </body>
 </html>
