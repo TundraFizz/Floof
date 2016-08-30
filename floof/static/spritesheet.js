@@ -16,40 +16,22 @@ loader.once("complete", onAssetsLoaded);
 loader.load();
 
 function onAssetsLoaded()
-{
-  var images = Object.keys(files).length;
-  
-  var frames = [];
+{  
+  var movies = [];
   
   for(var key in files)
   {
-    var name   = key;
-    var frames = files[key]["frames"];
+    var name   = key.substring(0, key.length-5);
+    var fCount = files[key]["frames"];
     var speed  = files[key]["speed"];
     
-    var temp = [];
+    var sprite = [];
     
-    if(i == 0)
-    {
-      for(var j = 0; j < 2; j++)
-      {
-        temp.push(PIXI.Texture.fromFrame("image001-" + parseInt(j)));
-      }
-    }
-    else if(i == 1)
-    {
-      for(var j = 0; j < 8; j++)
-      {
-        temp.push(PIXI.Texture.fromFrame("image004-" + parseInt(j)));
-      }
-    }
+    for(var i = 0; i < fCount; i++)
+      sprite.push(PIXI.Texture.fromFrame(name + "-" + parseInt(i)));
     
-    frames.push(temp);
+    movies.push(new PIXI.extras.MovieClip(sprite));
   }
-  
-  var movies = [];
-  movies.push(new PIXI.extras.MovieClip(frames[0]));
-  movies.push(new PIXI.extras.MovieClip(frames[1]));
   
   // MovieClip inherits all the properties of a PIXI sprite,
   // so you can change its position, its anchor, mask it, etc.
