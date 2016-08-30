@@ -10,8 +10,10 @@ def index(request):
     for f in all_files:
         ext = f[-5:]
         if ext == ".json":
-            files[f] = {}
-            files[f]["speed"] = 0.3
-            files[f]["frames"] = 2
+            with open("floof/static/img/" + f) as jfile:    
+                data = json.load(jfile)
+                files[f] = {}
+                files[f]["speed"] = data["meta"]["speed"]
+                files[f]["frames"] = data["meta"]["size"]
 
-    return {"project": "Floof", "files": json.dumps(files)}
+    return {"files": json.dumps(files)}
