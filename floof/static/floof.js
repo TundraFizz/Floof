@@ -1,37 +1,65 @@
 var renderer = PIXI.autoDetectRenderer(800, 600);
 document.body.appendChild(renderer.view);
 
-console.log("Project's name is: " + testing);
-console.log(files);
-
-var path = "static/img/";
-
 var stage = new PIXI.Container(); // Create the stage
 var loader = PIXI.loader;         // Create the loader
+
+var path = "static/img/";
 
 for(var key in files)
   loader.add(path + key);
 
+// loader.on("progress", function(loader,res){console.log(loader);});
 loader.once("complete", onAssetsLoaded);
 loader.load();
 
-function onAssetsLoaded()
-{  
-  var movies = [];
+function RandomProperty(obj)
+{
+  var keys = Object.keys(obj)
+  var i = keys.length * Math.random() << 0;
+  return Object.getOwnPropertyNames(obj)[i];
   
-  for(var key in files)
+  // Gets the actual object
+  // return obj[keys[ keys.length * Math.random() << 0]];
+}
+
+function onAssetsLoaded()
+{
+  var movies = [];
+  console.log(files)
+  // Select five random images to display
+  var len = Object.keys(files).length
+  
+  for(var i = 0; i < 5; i++)
   {
-    var name   = key.substring(0, key.length-5);
-    var fCount = files[key]["frames"];
-    var speed  = files[key]["speed"];
+    var obj = RandomProperty(files);
+    console.log(obj);
+    
+    var name   = obj.substring(0, obj.length-5);
+    var fCount = files[obj]["frames"];
+    var speed  = files[obj]["speed"];
     
     var sprite = [];
     
-    for(var i = 0; i < fCount; i++)
-      sprite.push(PIXI.Texture.fromFrame(name + "-" + parseInt(i)));
+    for(var j = 0; j < fCount; j++)
+      sprite.push(PIXI.Texture.fromFrame(name + "-" + parseInt(j)));
     
     movies.push(new PIXI.extras.MovieClip(sprite));
   }
+  
+  //for(var key in files)
+  //{
+  //  var name   = key.substring(0, key.length-5);
+  //  var fCount = files[key]["frames"];
+  //  var speed  = files[key]["speed"];
+  //  
+  //  var sprite = [];
+  //  
+  //  for(var i = 0; i < fCount; i++)
+  //    sprite.push(PIXI.Texture.fromFrame(name + "-" + parseInt(i)));
+  //  
+  //  movies.push(new PIXI.extras.MovieClip(sprite));
+  //}
   
   // MovieClip inherits all the properties of a PIXI sprite,
   // so you can change its position, its anchor, mask it, etc.
