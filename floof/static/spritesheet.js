@@ -5,42 +5,73 @@ console.log("Project's name is: " + testing);
 console.log(files);
 
 var path = "static/img/";
-// Find all .json files in path
-console.log("====================");
 
 var stage = new PIXI.Container(); // Create the stage
-var loader = PIXI.loader;
-loader.add("static/img/image001.json");
-loader.add("static/img/image004.json");
+var loader = PIXI.loader;         // Create the loader
+
+for(var key in files)
+  loader.add(path + key);
+
 loader.once("complete", onAssetsLoaded);
 loader.load();
 
 function onAssetsLoaded()
 {
-  var frames1 = [];
-  var frames2 = [];
+  var images = Object.keys(files).length;
   
-  for(var i = 0; i < 2; i++) frames1.push(PIXI.Texture.fromFrame("image001-" + parseInt(i)));
-  for(var i = 0; i < 8; i++) frames2.push(PIXI.Texture.fromFrame("image004-" + parseInt(i)));
+  var frames = [];
   
-  var movie1 = new PIXI.extras.MovieClip(frames1);
-  var movie2 = new PIXI.extras.MovieClip(frames2);
+  for(var key in files)
+  {
+    var name   = key;
+    var frames = files[key]["frames"];
+    var speed  = files[key]["speed"];
+    
+    var temp = [];
+    
+    if(i == 0)
+    {
+      for(var j = 0; j < 2; j++)
+      {
+        temp.push(PIXI.Texture.fromFrame("image001-" + parseInt(j)));
+      }
+    }
+    else if(i == 1)
+    {
+      for(var j = 0; j < 8; j++)
+      {
+        temp.push(PIXI.Texture.fromFrame("image004-" + parseInt(j)));
+      }
+    }
+    
+    frames.push(temp);
+  }
+  
+  var movies = [];
+  movies.push(new PIXI.extras.MovieClip(frames[0]));
+  movies.push(new PIXI.extras.MovieClip(frames[1]));
   
   // MovieClip inherits all the properties of a PIXI sprite,
-  // so you can change its position, its anchor, mask it, etc
-  movie1.position.set(200);
-  movie2.position.set(400);
+  // so you can change its position, its anchor, mask it, etc.
   
-  movie1.anchor.set(0.5);
-  movie1.animationSpeed = 0.3;
-  movie2.anchor.set(0.5);
-  movie2.animationSpeed = 0.3;
+  for(var i = 0; i < movies.length; i++)
+  {
+    var x = Math.floor(Math.random() * 700)
+    var y = Math.floor(Math.random() * 500)
+    movies[i].position.set(x, y);
+  }
   
-  movie1.play();
-  movie2.play();
+  for(var i = 0; i < movies.length; i++)
+  {
+    movies[i].anchor.set(0.5);
+    movies[i].animationSpeed = 0.3;
+  }
   
-  stage.addChild(movie1);
-  stage.addChild(movie2);
+  for(var i = 0; i < movies.length; i++)
+    movies[i].play();
+  
+  for(var i = 0; i < movies.length; i++)
+    stage.addChild(movies[i]);
   
   animate();
 }
