@@ -1,4 +1,5 @@
 import os
+import json
 import math
 from PIL import Image
 
@@ -24,17 +25,41 @@ def export_data(file):
     print(h)
     print(frames)
     print(size)
-    
-    data = {}
-    
-    for x in range(0, frames):
+
+    data = {"frames": {}}
+    x = 0
+    y = 0
+    sub_width = int(w/size)
+    sub_height = int(h/size)
+
+    for i in range(0, frames):
+        f = "{}-{}".format(name, i)
+        data["frames"][f] = {}
         
-        data["frames"] = "{}-{}".format(name, x)
-        print(data["frames"])
-    
-    
-    
+        frame = {"x": x, "y": y, "w": sub_width, "h": sub_height}
+        spriteSourceSize = {"x": 0, "y": 0}
+        sourceSize = {"w": sub_width, "h": sub_height}
+        trimmed = True
+        rotated = False
+        
+        data["frames"][f]["frame"] = frame
+        data["frames"][f]["spriteSourceSize"] = spriteSourceSize
+        data["frames"][f]["sourceSize"] = sourceSize
+        data["frames"][f]["trimmed"] = trimmed
+        data["frames"][f]["rotated"] = rotated
+        
+        x += sub_width
+        if x == w:
+            x = 0
+            y += sub_height
+
     print("===========================================")
+    data["meta"] = {}
+    data["meta"]["image"] = file
+    data["meta"]["speed"] = 0.3
+    data["meta"]["size"] = frames
+    with open("{}.json".format(name), "w") as outfile:
+        json.dump(data, outfile)
 
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
