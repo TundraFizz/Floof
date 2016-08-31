@@ -8,7 +8,7 @@ def init():
     all_files = os.listdir()
     for f in all_files:
         ext = f[-4:]
-        if ext == ".png":
+        if ext == ".gif":
             export_data(f)
 
 
@@ -29,8 +29,8 @@ def export_data(file):
     data = {"frames": {}}
     x = 0
     y = 0
-    sub_width = int(w/size)
-    sub_height = int(h/size)
+    sub_width = (w/size)
+    sub_height = (h/size)
 
     for i in range(0, frames):
         f = "{}-{}".format(name, i)
@@ -49,7 +49,8 @@ def export_data(file):
         data["frames"][f]["rotated"] = rotated
         
         x += sub_width
-        if x == w:
+        
+        if math.ceil(x) == w:
             x = 0
             y += sub_height
 
