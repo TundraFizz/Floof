@@ -1,0 +1,14 @@
+# This file goes in
+# /etc/systemd/system/floofspace.service
+#
+# You will need to reload the system service files
+# sudo systemctl daemon-reload
+#
+# Enable the service to automatically start, and start it manually
+# sudo systemctl enable floofspace
+# sudo systemctl start floofspace
+
+[Service]
+WorkingDirectory=/home/ec2-user/floofspace
+ExecStart=/usr/bin/node server.js
+Restart=always
